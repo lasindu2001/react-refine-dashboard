@@ -31,9 +31,7 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
-import { Login } from "./pages/login";
-import { Register } from "./pages/register";
+import { Home, ForgotPassword, Login, Register } from './pages'
 
 function App() {
   return (
@@ -129,6 +127,10 @@ function App() {
                     element={<ForgotPassword />}
                   />
                 </Route>
+                <Route index element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
               </Routes>
 
               <RefineKbar />
