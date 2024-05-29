@@ -110,23 +110,6 @@ function App() {
                   </Route>
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
-                <Route
-                  element={
-                    <Authenticated
-                      key="authenticated-outer"
-                      fallback={<Outlet />}
-                    >
-                      <NavigateToResource />
-                    </Authenticated>
-                  }
-                >
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route
-                    path="/forgot-password"
-                    element={<ForgotPassword />}
-                  />
-                </Route>
                 <Route index element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
