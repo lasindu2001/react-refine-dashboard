@@ -5,6 +5,7 @@ import type { User } from "@/graphql/schema.types";
 import React from 'react';
 import { SettingOutlined } from "@ant-design/icons";
 import { Text } from '../text';
+import { AccountSettings } from './account-settings';
 
 const CurrentUser = () => {
   const [opened, setOpened] = React.useState(false);
@@ -63,7 +64,13 @@ const CurrentUser = () => {
           style={{ cursor: "pointer" }}
         />
       </Popover>
-      
+      {user && (
+        <AccountSettings
+          opened={opened}
+          setOpened={setOpened}
+          userId={user.id}
+        />
+      )}
     </>
   )
 }
