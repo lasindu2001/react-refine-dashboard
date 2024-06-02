@@ -1,13 +1,15 @@
 import { KanbanColumnSkeleton, ProjectCardSkeleton } from '@/components'
 import { KanbanAddCardButton } from '@/components/tasks/kanban/add-card-button'
 import { KanbanBoard, KanbanBoardContainer } from '@/components/tasks/kanban/board'
-import ProjectCard, { ProjectCardMemo } from '@/components/tasks/kanban/card'
+import { ProjectCardMemo } from '@/components/tasks/kanban/card'
 import KanbanColumn from '@/components/tasks/kanban/column'
 import KanbanItem from '@/components/tasks/kanban/item'
+import { UPDATE_TASK_STAGE_MUTATION } from '@/graphql/mutations'
 import { TASKS_QUERY, TASK_STAGES_QUERY } from '@/graphql/queries'
 import { TaskStage } from '@/graphql/schema.types'
 import { TasksQuery } from '@/graphql/types'
-import { useList } from '@refinedev/core'
+import { DragEndEvent } from '@dnd-kit/core'
+import { useList, useUpdate } from '@refinedev/core'
 import { GetFieldsFromList } from '@refinedev/nestjs-query'
 import React from 'react'
 
@@ -45,6 +47,8 @@ const List = ({ children }: React.PropsWithChildren) => {
         }
     })
 
+    const { mutate: updateTask } = useUpdate()
+
     const taskStages = React.useMemo(() => {
         if (!tasks?.data || !stages?.data) {
             return {
@@ -70,6 +74,31 @@ const List = ({ children }: React.PropsWithChildren) => {
         console.log('add click')
     }
 
+    const handleOnDragEnd = (event: DragEndEvent) => {
+        let stageId = event.over?.id as undefined | string | null
+        const taskId = event.active.id as string
+        const taskStageId = event.active.data.current?.stageId
+
+        if (taskStageId === stageId) return
+
+        if (stageId === 'unassigned') {
+            stageId = null
+        }
+
+        updateTask({
+            resource: 'tasks',
+            id: taskId,
+            values: {
+                stageId: stageId,
+            },
+            successNotification: false,
+            mutationMode: 'optimistic',
+            meta: {
+                gqlMutation: UPDATE_TASK_STAGE_MUTATION
+            }
+        })
+    }
+
     const isLoading = isLoadingStages || isLoadingTasks
 
     if (isLoading) {
@@ -81,7 +110,7 @@ const List = ({ children }: React.PropsWithChildren) => {
     return (
         <>
             <KanbanBoardContainer>
-                <KanbanBoard>
+                <KanbanBoard onDragEnd={handleOnDragEnd}>
                     <KanbanColumn
                         id="unassigned"
                         title={"Unassigned"}
