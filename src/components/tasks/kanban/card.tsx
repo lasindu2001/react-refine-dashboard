@@ -83,12 +83,18 @@ const ProjectCard = ({ id, title, dueDate, users }: ProjectCardProps) => {
                         {title}
                     </Text>
                 }
-                onClick={() => edit()}
+                onClick={() => edit('tasks', id, 'replace')}
                 extra={
                     <Dropdown
                         trigger={["click"]}
                         menu={{
-                            items: dropDownItems
+                            items: dropDownItems,
+                            onPointerDown: (e) => {
+                                e.stopPropagation()
+                            },
+                            onClick: (e) => {
+                                e.domEvent.stopPropagation()
+                            }
                         }}
                         placement='bottom'
                         arrow={{ pointAtCenter: true }}
