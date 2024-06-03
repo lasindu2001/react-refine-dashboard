@@ -1,4 +1,3 @@
-import React from "react";
 import { CompanyList } from "./list";
 import { Form, Input, Modal, Select } from "antd";
 import { useModalForm, useSelect } from "@refinedev/antd";

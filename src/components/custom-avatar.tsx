@@ -1,4 +1,4 @@
-import { getNameInitials } from "@/utilities";
+import { getNameInitials, getRandomColorFromString } from "@/utilities";
 import { Avatar as AntdAvatar, AvatarProps } from "antd"
 
 type Props = AvatarProps & {
@@ -11,7 +11,7 @@ const CustomAvatar = ({ name = "", style, ...rest }: Props) => {
         alt={name}
         size="small"
         style={{
-            backgroundColor: '#85kl96',
+            backgroundColor: rest?.src ? 'transparent' : getRandomColorFromString(name),
             display: "flex",
             alignItems: "center",
             border: "none",

@@ -8,7 +8,7 @@ const Header = () => {
   const { token } = useToken();
 
   const headerStyles: React.CSSProperties = {
-    backgroundColor: '#7596a1',
+    backgroundColor: token.colorBgElevated,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
